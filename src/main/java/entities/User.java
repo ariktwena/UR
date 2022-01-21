@@ -103,10 +103,10 @@ public class User implements Serializable {
         //return(pw.equals(userPass));
     }
 
-    public User(String userName, String firstName, String lastName, String userPass) {
-        this.userName = userName;
+    public User(String firstName, String lastName, String userName, String userPass) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userName = userName;
         this.userSalt = BCrypt.gensalt(10);
         this.userPass = encrypt(userPass);
         this.department = null;

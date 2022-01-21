@@ -1,10 +1,12 @@
 package facades;
 
 import dto.UserDTOSmall;
+import entities.Project;
 import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import security.errorhandling.AuthenticationException;
 
 /**
@@ -35,7 +37,10 @@ public class UserFacade {
         EntityManager em = emf.createEntityManager();
         User user;
         try {
-            user = em.find(User.class, username);
+//            user = em.find(User.class, username);
+            Query query = em.createQuery("SELECT u FROM User u WHERE u.userName = :name ", User.class);
+            query.setParameter("name", username);
+            user = (User) query.getSingleResult();
             if (user == null || !user.verifyPassword(password)) {
                 throw new AuthenticationException("Invalid user name or password");
             }
