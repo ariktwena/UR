@@ -1,0 +1,39 @@
+@startuml
+Title Domænemodel
+
+hide circle
+hide methods
+
+class Wheel {
+    serienummer
+}
+
+class Felter {
+    beskrivelse
+    værdi
+}
+
+class Spin {
+    runder
+    præmie
+}
+
+class Spiller {
+    navn
+    email
+}
+
+class Firma {
+    navn
+}
+
+
+
+Firma "1" -- "*" Wheel
+Wheel "1" -- "*" Felter
+Wheel "1" -- "*" Spin
+Spin "*" -- "1" Spiller
+
+
+
+@enduml

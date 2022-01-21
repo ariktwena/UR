@@ -1,0 +1,36 @@
+@startuml
+Title Aktivitetsdiagram TO-BE
+
+
+|Kunde|
+start
+:Får besked fra et firma om en on-going
+konkurrence som kunden kan deltage i;
+
+|#AntiqueWhite|Hjemmeside der hoster et lykkehjul|
+:Kunden besøger hjemmesiden;
+
+:Kunden indtaster sit navn og email;
+
+:Kunden vælger et lykkehjul;
+
+:Kunden trykker på spin knappen;
+
+|Lykke ApS|
+:Backend modertager et request om et spin;
+
+:Backend udregner spin data og præmie;
+
+:Det aktuelle spin gemmes i DB;
+
+:Det aktuelle spin sendes til hjemmesiden
+via et response;
+
+|#AntiqueWhite|Hjemmeside der hoster et lykkehjul|
+:Hjulet på lykkehjulet drejer rundt
+på baggrund af den modtaget data;
+
+:Kunden ser resultatet af det aktuelle spin
+ samt den præmie som kunden har vundet;
+stop
+@enduml
