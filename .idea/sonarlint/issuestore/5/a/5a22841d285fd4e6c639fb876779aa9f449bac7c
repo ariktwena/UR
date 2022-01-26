@@ -1,0 +1,12 @@
+
+‹
+java:S13196"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(’âÒŞúÿÿÿÿ
+†
+java:S1319S"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(îåŸñ
+W
+java:S1710"<Remove the 'NamedQueries' wrapper from this annotation group(¨‘¯¼ûÿÿÿÿ
+F
+java:S1128
+"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ
+N
+java:S1128"9Remove this unused import 'javax.persistence.ManyToMany'.(Àğ½

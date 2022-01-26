@@ -5,19 +5,22 @@ import entities.Department;
 public class DepartmentDTOSmall {
 
   private int id;
-  private String name;
+  private String departmentName;
+  private int active;
 
   public DepartmentDTOSmall() {
   }
 
   public DepartmentDTOSmall(Department department) {
     this.id = department.getId();
-    this.name = department.getDepartmentName();
+    this.departmentName = department.getDepartmentName();
+    this.active = department.getActive();
   }
 
   public DepartmentDTOSmall(String name) {
     this.id = -1;
-    this.name = name;
+    this.departmentName = name;
+    this.active = 1;
   }
 
   public int getId() {
@@ -29,18 +32,27 @@ public class DepartmentDTOSmall {
   }
 
   public String getName() {
-    return name;
+    return departmentName;
   }
 
   public void setName(String name) {
-    this.name = name;
+    this.departmentName = name;
+  }
+
+  public int getActive() {
+    return active;
+  }
+
+  public void setActive(int active) {
+    this.active = active;
   }
 
   @Override
   public String toString() {
     return "DepartmentDTOSmall{" +
         "id=" + id +
-        ", name='" + name + '\'' +
+        ", departmentName='" + departmentName + '\'' +
+        ", active=" + active +
         '}';
   }
 }

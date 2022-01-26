@@ -62,7 +62,7 @@ public class UserFacade {
             role = em.find(Role.class, "user");
             newUser.addRole(role);
             em.merge(newUser);
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } finally {
             em.close();
         }

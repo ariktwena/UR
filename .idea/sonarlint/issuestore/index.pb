@@ -3,3 +3,19 @@ a
 1Dokumentation/Domænemodel/Domain_Model_Meew.puml,4/7/470cfc3ae5750b030b18ef006a87166a7d32705c
 h
 8Dokumentation/Aktivitetsdiagram/MeeW_Activity_TO-BE.puml,f/f/ff81ea12c0bca2d30ac362309696f88f5557e005
+9
+	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+6
+UR.iml,0/3/03969f162ebb28b4520f1d39b158ea1038a2a9ee
+T
+$src/main/webapp/META-INF/context.xml,c/b/cbfb0d2e9b2b9fbf9d54374577c894a38643c6d0
+S
+#src/main/java/entities/Company.java,3/f/3f0fc3cc4639881ca8bbb553430cbf24556e7893
+Q
+!src/main/java/entities/Wheel.java,5/a/5a22841d285fd4e6c639fb876779aa9f449bac7c
+\
+,src/main/java/tester/WheelTesterPersist.java,3/a/3a2898b88f3e5931834fac3578a46859abe29e9f
+7
+pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
+P
+ src/main/java/dto/PlayerDTO.java,0/a/0a2a9aac5eaf3b09782a576486de3406a861e76d

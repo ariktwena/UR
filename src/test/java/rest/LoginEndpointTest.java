@@ -2,15 +2,8 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dto.SpinDTO;
-import entities.Company;
-import entities.Field;
-import entities.Player;
 import entities.User;
 import entities.Role;
-import entities.Spin;
-import entities.Wheel;
-
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
@@ -47,14 +40,14 @@ public class LoginEndpointTest {
     private static HttpServer httpServer;
     private static EntityManagerFactory emf;
 
-    private final Field f1 = new Field("Car", 200);
-    private final Field f2 = new Field("Boat", 400);
-    private final Field f3 = new Field("Jepp", 600);
-    private final Field f4 = new Field("Chopper", 800);
-    private final Field f5 = new Field("Bike", 1000);
-    private final Wheel w = new Wheel("Wheel_test_name");
-    private final Company c = new Company("test_company");
-    private final Player p = new Player("test_player", "test@test.dk");
+//    private final Field f1 = new Field("Car", 200);
+//    private final Field f2 = new Field("Boat", 400);
+//    private final Field f3 = new Field("Jepp", 600);
+//    private final Field f4 = new Field("Chopper", 800);
+//    private final Field f5 = new Field("Bike", 1000);
+//    private final Wheel w = new Wheel("Wheel_test_name");
+//    private final Company c = new Company("test_company");
+//    private final Player p = new Player("test_player", "test@test.dk");
 
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
@@ -108,31 +101,31 @@ public class LoginEndpointTest {
             em.persist(admin);
             em.persist(both);
 
-            em.createNamedQuery("Spin.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Field.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Wheel.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Company.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Player.deleteAllRows").executeUpdate();
-
-            w.addField(f1);
-            w.addField(f2);
-            w.addField(f3);
-            w.addField(f4);
-            w.addField(f5);
-            em.persist(w);
-
-            c.addWheel(w);
-            em.persist(c);
-
-            em.persist(w);
-            em.persist(p);
-
-            Spin s = new Spin(w.getFields().size());
-            s.setResultName(w.getFields());
-            s.setResultValue(w.getFields());
-            s.setPlayer(p);
-            s.setWheel(w);
-            em.persist(s);
+//            em.createNamedQuery("Spin.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Field.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Wheel.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Company.deleteAllRows").executeUpdate();
+//            em.createNamedQuery("Player.deleteAllRows").executeUpdate();
+//
+//            w.addField(f1);
+//            w.addField(f2);
+//            w.addField(f3);
+//            w.addField(f4);
+//            w.addField(f5);
+//            em.persist(w);
+//
+//            c.addWheel(w);
+//            em.persist(c);
+//
+//            em.persist(w);
+//            em.persist(p);
+//
+//            Spin s = new Spin(w.getFields().size());
+//            s.setResultName(w.getFields());
+//            s.setResultValue(w.getFields());
+//            s.setPlayer(p);
+//            s.setWheel(w);
+//            em.persist(s);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -275,17 +268,6 @@ public class LoginEndpointTest {
      */
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    @Test
-    public void test_US3() {
 
-        given()
-                .contentType("application/json")
-                .header("x-access-token", securityToken)
-                .get("/wheel/{id}", w.getId())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("wheelName", equalTo(w.getWheelName()));
-    }
 
 }

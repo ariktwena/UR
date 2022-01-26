@@ -2,6 +2,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,13 +33,14 @@ public class Role implements Serializable {
     private int id;
     @Column(name = "role_name", length = 20)
     private String roleName;
+    @Column(name = "active")
+    private int active = 1;
 
     @ManyToMany(mappedBy = "roleList")
     private List<User> userList;
 
     public Role() {
     }
-
 
 
     public int getId() {
@@ -67,5 +69,37 @@ public class Role implements Serializable {
 
     public void setUserList(List<User> userList) {
         this.userList = userList;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+//    public void removeUser(User user) {
+//        if(user != null){
+//            this.userList.remove(user);
+//            user.getRoleList().remove(this);
+//        }
+//    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Role role = (Role) o;
+        return id == role.id && Objects.equals(roleName, role.roleName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, roleName);
     }
 }

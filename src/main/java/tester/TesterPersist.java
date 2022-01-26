@@ -1,6 +1,5 @@
 package tester;
 
-import entities.Player;
 import entities.Project;
 import entities.User;
 import javax.persistence.EntityManager;

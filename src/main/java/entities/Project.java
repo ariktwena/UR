@@ -23,6 +23,8 @@ public class Project implements Serializable {
   private int id;
   @Column(name = "name", length = 255, nullable = false, unique = true)
   private String projectName;
+  @Column(name = "active")
+  private int active;
 
   //***************Many to One****************
   @ManyToOne
@@ -43,6 +45,7 @@ public class Project implements Serializable {
   public Project(String projectName) {
     this.projectName = projectName;
     this.user = null;
+    this.active = 1;
   }
 
   public int getId() {
@@ -59,5 +62,13 @@ public class Project implements Serializable {
 
   public void setProjectName(String projectName) {
     this.projectName = projectName;
+  }
+
+  public int getActive() {
+    return active;
+  }
+
+  public void setActive(int active) {
+    this.active = active;
   }
 }

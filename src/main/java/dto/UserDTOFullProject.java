@@ -9,6 +9,7 @@ public class UserDTOFullProject {private int id;
   private String lastName;
   private DepartmentDTOSmall departmentDTOSmall;
   private ArrayList<ProjectDTOSmall> projects;
+  private int active;
 
   public UserDTOFullProject() {
   }
@@ -19,6 +20,7 @@ public class UserDTOFullProject {private int id;
     this.lastName = user.getLastName();
     this.departmentDTOSmall = user.getDepartment() == null ? null : new DepartmentDTOSmall(user.getDepartment());
     this.projects = user.getProjects() == null ? null : convertToDto(user.getProjects());
+    this.active = user.getActive();
   }
 
   public UserDTOFullProject(int id) {
@@ -27,6 +29,7 @@ public class UserDTOFullProject {private int id;
     this.lastName = "";
     this.departmentDTOSmall = null;
     this.projects = new ArrayList<>();
+    this.active = 1;
   }
 
   private ArrayList<ProjectDTOSmall> convertToDto(ArrayList<Project> projects){
@@ -78,6 +81,14 @@ public class UserDTOFullProject {private int id;
     this.projects = projects;
   }
 
+  public int getActive() {
+    return active;
+  }
+
+  public void setActive(int active) {
+    this.active = active;
+  }
+
   @Override
   public String toString() {
     return "UserDTOFullProject{" +
@@ -86,6 +97,7 @@ public class UserDTOFullProject {private int id;
         ", lastName='" + lastName + '\'' +
         ", departmentDTOSmall=" + departmentDTOSmall +
         ", projects=" + projects +
+        ", active=" + active +
         '}';
   }
 }

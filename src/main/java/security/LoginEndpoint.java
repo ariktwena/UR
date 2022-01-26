@@ -10,6 +10,7 @@ import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import entities.Role;
 import facades.UserFacade;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,13 @@ public class LoginEndpoint {
             User user = USER_FACADE.getVeryfiedUser(username, password);
             String token = createToken(username, user.getRolesAsStrings());
             JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("firstName", user.getFirstName());
+            responseJson.addProperty("lastName", user.getLastName());
+            String roleList = "";
+            for (Role role : user.getRoleList()){
+                roleList = roleList + role.getRoleName() + ",";
+            }
+            responseJson.addProperty("userRole", roleList);
             responseJson.addProperty("username", username);
             responseJson.addProperty("token", token);
             return Response.ok(new Gson().toJson(responseJson)).build();

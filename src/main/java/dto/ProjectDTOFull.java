@@ -6,7 +6,8 @@ public class ProjectDTOFull {
 
   private int id;
   private String projectName;
-  private UserDTOFull user;
+  private UserDTOSmall user;
+  private int active;
 
   public ProjectDTOFull() {
   }
@@ -14,19 +15,22 @@ public class ProjectDTOFull {
   public ProjectDTOFull(Project project) {
     this.id = project.getId();
     this.projectName = project.getProjectName();
-    this.user = project.getUser() == null ? null : new UserDTOFull(project.getUser());
+    this.user = project.getUser() == null ? null : new UserDTOSmall(project.getUser());
+    this.active = project.getActive();
   }
 
-  public ProjectDTOFull(String projectName, UserDTOFull user) {
+  public ProjectDTOFull(String projectName, UserDTOSmall user) {
     this.id = -1;
     this.projectName = projectName;
     this.user = user;
+    this.active = 1;
   }
 
-  public ProjectDTOFull(int id, String projectName, UserDTOFull user) {
+  public ProjectDTOFull(int id, String projectName, UserDTOSmall user) {
     this.id = id;
     this.projectName = projectName;
     this.user = user;
+    this.active = 1;
   }
 
   public int getId() {
@@ -45,12 +49,20 @@ public class ProjectDTOFull {
     this.projectName = projectName;
   }
 
-  public UserDTOFull getUser() {
+  public UserDTOSmall getUser() {
     return user;
   }
 
-  public void setUser(UserDTOFull user) {
+  public void setUser(UserDTOSmall user) {
     this.user = user;
+  }
+
+  public int getActive() {
+    return active;
+  }
+
+  public void setActive(int active) {
+    this.active = active;
   }
 
   @Override
@@ -59,6 +71,7 @@ public class ProjectDTOFull {
         "id=" + id +
         ", projectName='" + projectName + '\'' +
         ", user=" + user +
+        ", active=" + active +
         '}';
   }
 }

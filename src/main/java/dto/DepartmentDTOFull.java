@@ -7,7 +7,8 @@ import java.util.ArrayList;
 public class DepartmentDTOFull {
 
   private int id;
-  private String name;
+  private String departmentName;
+  private int active;
   private ArrayList<UserDTOSmall> users;
 
   public DepartmentDTOFull() {
@@ -15,7 +16,8 @@ public class DepartmentDTOFull {
 
   public DepartmentDTOFull(Department department) {
     this.id = department.getId();
-    this.name = department.getDepartmentName();
+    this.departmentName = department.getDepartmentName();
+    this.active = department.getActive();
     this.users = department.getUsers() == null ? null : convertToDto(department.getUsers());
   }
 
@@ -37,11 +39,11 @@ public class DepartmentDTOFull {
   }
 
   public String getName() {
-    return name;
+    return departmentName;
   }
 
   public void setName(String name) {
-    this.name = name;
+    this.departmentName = name;
   }
 
   public ArrayList<UserDTOSmall> getUsers() {
@@ -52,11 +54,20 @@ public class DepartmentDTOFull {
     this.users = users;
   }
 
+  public int getActive() {
+    return active;
+  }
+
+  public void setActive(int active) {
+    this.active = active;
+  }
+
   @Override
   public String toString() {
     return "DepartmentDTOFull{" +
         "id=" + id +
-        ", name='" + name + '\'' +
+        ", departmentName='" + departmentName + '\'' +
+        ", active=" + active +
         ", users=" + users +
         '}';
   }

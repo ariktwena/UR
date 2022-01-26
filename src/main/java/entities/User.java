@@ -48,6 +48,8 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "user_salt")
     private String userSalt;
+    @Column(name = "active")
+    private int active;
     @JoinTable(name = "user_roles", joinColumns = {
         @JoinColumn(name = "user_id", referencedColumnName = "user_id")}, inverseJoinColumns = {
         @JoinColumn(name = "role_id", referencedColumnName = "role_id")})
@@ -111,6 +113,7 @@ public class User implements Serializable {
         this.userPass = encrypt(userPass);
         this.department = null;
         this.projects = new ArrayList<>();
+        this.active = 1;
     }
 
 
@@ -135,7 +138,7 @@ public class User implements Serializable {
     }
 
     public void setUserPass(String userPass) {
-        this.userPass = userPass;
+        this.userPass = encrypt(userPass);
     }
 
     public List<Role> getRoleList() {
@@ -150,7 +153,14 @@ public class User implements Serializable {
         roleList.add(userRole);
     }
 
-    private String encrypt(String password) {
+    public void removeRole(Role userRole) {
+        if(userRole != null){
+            this.roleList.remove(userRole);
+            userRole.getUserList().remove(this);
+        }
+    }
+
+    public String encrypt(String password) {
         return BCrypt.hashpw(password, this.userSalt);
     }
 
@@ -170,6 +180,18 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public void setUserSalt() {
+        this.userSalt = BCrypt.gensalt(10);
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -179,7 +201,10 @@ public class User implements Serializable {
             ", lastName='" + lastName + '\'' +
             ", userPass='" + userPass + '\'' +
             ", userSalt='" + userSalt + '\'' +
+            ", active=" + active +
             ", roleList=" + roleList +
+            ", department=" + department +
+            ", projects=" + projects +
             '}';
     }
 }
