@@ -9,6 +9,7 @@ public class UserDTOFull {
   private int id;
   private String firstName;
   private String lastName;
+  private String email;
   private DepartmentDTOSmall departmentDTOSmall;
   private ArrayList<RoleDTO> roles;
 
@@ -19,6 +20,7 @@ public class UserDTOFull {
     this.id = user.getId();
     this.firstName = user.getFirstName();
     this.lastName = user.getLastName();
+    this.email = user.getEmail();
     this.departmentDTOSmall = user.getDepartment() == null ? null : new DepartmentDTOSmall(user.getDepartment());
     this.roles = user.getRoleList() == null ? null : convertToDto(user.getRoleList());
   }
@@ -31,18 +33,20 @@ public class UserDTOFull {
     this.roles = new ArrayList<>();
   }
 
-  public UserDTOFull(String firstName, String lastName) {
+  public UserDTOFull(String firstName, String lastName, String email) {
     this.id = -1;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.email = email;
     this.departmentDTOSmall = null;
     this.roles = new ArrayList<>();
   }
 
-  public UserDTOFull(String firstName, String lastName, String departmentName) {
+  public UserDTOFull(String firstName, String lastName, String email, String departmentName) {
     this.id = -1;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.email = email;
     this.departmentDTOSmall = new DepartmentDTOSmall(departmentName);
     this.roles = new ArrayList<>();
   }
@@ -55,18 +59,20 @@ public class UserDTOFull {
     this.roles = roles;
   }
 
-  public UserDTOFull(int id, String firstName, String lastName) {
+  public UserDTOFull(int id, String firstName, String lastName, String email) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.email = email;
     this.departmentDTOSmall = null;
     this.roles = new ArrayList<>();
   }
 
-  public UserDTOFull(int id, String firstName, String lastName, String departmentName) {
+  public UserDTOFull(int id, String firstName, String lastName, String email, String departmentName) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.email = email;
     this.departmentDTOSmall = new DepartmentDTOSmall(departmentName);
   }
 
@@ -119,12 +125,21 @@ public class UserDTOFull {
     this.roles = roles;
   }
 
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
   @Override
   public String toString() {
     return "UserDTOFull{" +
         "id=" + id +
         ", firstName='" + firstName + '\'' +
         ", lastName='" + lastName + '\'' +
+        ", email='" + email + '\'' +
         ", departmentDTOSmall=" + departmentDTOSmall +
         ", roles=" + roles +
         '}';

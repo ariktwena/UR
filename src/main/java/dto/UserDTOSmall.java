@@ -16,6 +16,7 @@ public class UserDTOSmall {
     private int id;
     private String firstName;
     private String lastName;
+    private String email;
 
     public UserDTOSmall() {
     }
@@ -24,18 +25,21 @@ public class UserDTOSmall {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.email = user.getEmail();
     }
 
-    public UserDTOSmall(String firstName, String lastName) {
+    public UserDTOSmall(String firstName, String lastName, String email) {
         this.id = -1;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
 
-    public UserDTOSmall(int id, String firstName, String lastName) {
+    public UserDTOSmall(int id, String firstName, String lastName, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
     }
 
     public int getId() {
@@ -62,12 +66,21 @@ public class UserDTOSmall {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "UserDTOSmall{" +
             "id=" + id +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", email='" + email + '\'' +
             '}';
     }
 }

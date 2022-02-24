@@ -22,9 +22,9 @@ public class SetupTestUsers {
         Department d2 = new Department("Finance");
         Department d3 = new Department("R&D");
 
-        User user = new User("User first name", "User last name", "user", "1234");
-        User admin = new User("Admin first name", "Admin last name", "admin", "1234");
-        User both = new User("Arik", "Gaarde Nielsen", "arik", "1234");
+        User user = new User("User first name", "User last name", "user", "email@email.com", "1234");
+        User admin = new User("Admin first name", "Admin last name", "admin", "email@email.com", "1234");
+        User both = new User("Arik", "Gaarde Nielsen", "arik", "email@email.com", "1234");
 
         if (admin.getUserPass().equals("test") || user.getUserPass().equals("test") || both.getUserPass().equals("test")) {
             throw new UnsupportedOperationException("You have not changed the passwords");
@@ -73,9 +73,9 @@ public class SetupTestUsers {
         Department d2 = new Department("Finance");
         Department d3 = new Department("R&D");
 
-        User user = new User("User first name", "User last name", "user", "1234");
-        User admin = new User("Admin first name", "Admin last name", "admin", "1234");
-        User both = new User("Arik", "Gaarde Nielsen", "arik", "1234");
+        User user = new User("User first name", "User last name", "user", "email@email.com", "1234");
+        User admin = new User("Admin first name", "Admin last name", "admin", "email@email.com", "1234");
+        User both = new User("Arik", "Gaarde Nielsen", "arik", "email@email.com", "1234");
 
         if (admin.getUserPass().equals("test") || user.getUserPass().equals("test") || both.getUserPass().equals("test")) {
             throw new UnsupportedOperationException("You have not changed the passwords");

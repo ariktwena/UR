@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class UserDTOFullProject {private int id;
   private String firstName;
   private String lastName;
+  private String email;
   private DepartmentDTOSmall departmentDTOSmall;
   private ArrayList<ProjectDTOSmall> projects;
   private int active;
@@ -18,6 +19,7 @@ public class UserDTOFullProject {private int id;
     this.id = user.getId();
     this.firstName = user.getFirstName();
     this.lastName = user.getLastName();
+    this.email = user.getEmail();
     this.departmentDTOSmall = user.getDepartment() == null ? null : new DepartmentDTOSmall(user.getDepartment());
     this.projects = user.getProjects() == null ? null : convertToDto(user.getProjects());
     this.active = user.getActive();
@@ -89,12 +91,21 @@ public class UserDTOFullProject {private int id;
     this.active = active;
   }
 
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
   @Override
   public String toString() {
     return "UserDTOFullProject{" +
         "id=" + id +
         ", firstName='" + firstName + '\'' +
         ", lastName='" + lastName + '\'' +
+        ", email='" + email + '\'' +
         ", departmentDTOSmall=" + departmentDTOSmall +
         ", projects=" + projects +
         ", active=" + active +

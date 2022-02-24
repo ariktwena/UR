@@ -8,6 +8,7 @@ public class UserDTOCreateEdit {
   private String username;
   private String firstName;
   private String lastName;
+  private String email;
   private String password;
 
   public UserDTOCreateEdit() {
@@ -19,6 +20,17 @@ public class UserDTOCreateEdit {
     this.firstName = user.getFirstName();
     this.lastName = user.getLastName();
     this.password = user.getUserPass();
+    this.email = user.getEmail();
+  }
+
+  public UserDTOCreateEdit(int id, String username, String firstName, String lastName, String email,
+      String password) {
+    this.id = id;
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.password = password;
   }
 
   public UserDTOCreateEdit(int id, String username, String firstName, String lastName,
@@ -36,6 +48,16 @@ public class UserDTOCreateEdit {
     this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.password = password;
+  }
+
+  public UserDTOCreateEdit(String username, String firstName, String lastName, String email,
+      String password) {
+    this.id = -1;
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
     this.password = password;
   }
 
@@ -95,6 +117,14 @@ public class UserDTOCreateEdit {
     this.password = password;
   }
 
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
   @Override
   public String toString() {
     return "UserDTOCreateEdit{" +
@@ -102,6 +132,7 @@ public class UserDTOCreateEdit {
         ", username='" + username + '\'' +
         ", firstName='" + firstName + '\'' +
         ", lastName='" + lastName + '\'' +
+        ", email='" + email + '\'' +
         ", password='" + password + '\'' +
         '}';
   }

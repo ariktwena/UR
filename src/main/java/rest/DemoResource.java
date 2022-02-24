@@ -118,17 +118,19 @@ public class DemoResource {
         String firstName;
         String lastName;
         String username;
+        String email;
         String password;
 
             JsonObject json = JsonParser.parseString(jsonString).getAsJsonObject();
             firstName = json.get("firstName").getAsString();
             lastName = json.get("lastName").getAsString();
             username = json.get("username").getAsString();
+            email = json.get("email").getAsString();
             password = json.get("password").getAsString();
 
         
         
-        UserDTOSmall userDTOSmall = FACADE.createUser(firstName, lastName, username, password);
+        UserDTOSmall userDTOSmall = FACADE.createUser(firstName, lastName, username, email, password);
         return GSON.toJson(userDTOSmall);
     }
 }

@@ -5,12 +5,14 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.CategoryDTOSmall;
 import dto.DepartmentDTOFull;
 import dto.DepartmentDTOSmall;
 import dto.ProjectDTOFull;
 import dto.RoleDTO;
 import dto.UserDTOCreateEdit;
 import dto.UserDTOFull;
+import errorhandling.NotFoundException;
 import facades.ReqFacade;
 import java.util.ArrayList;
 import javax.persistence.EntityManagerFactory;
@@ -259,6 +261,145 @@ public class ReqResource {
     ProjectDTOFull projectDTOFull = GSON.fromJson(project, ProjectDTOFull.class);
     projectDTOFull = FACADE.editProject(projectDTOFull, id);
     return GSON.toJson(projectDTOFull);
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/projects/{id}")
+  @DELETE
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String editProject(@PathParam("id") int id) {
+    return GSON.toJson(FACADE.deleteProject(id));
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/projects/activate/{id}")
+  @PUT
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String activateProject(@PathParam("id") int id) {
+    return GSON.toJson(FACADE.activateProject(id));
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/projects")
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getAllProject() {
+    return GSON.toJson(FACADE.getAllProject());
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/projects/{id}")
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getProjectById(@PathParam("id") int id) {
+    return GSON.toJson(FACADE.getProjectById(id));
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/projects/user/{id}")
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getProjectByUserId(@PathParam("id") int id) {
+    return GSON.toJson(FACADE.getProjectByUserId(id));
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/projects/{projectId}/user/{userId}")
+  @PUT
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String addProjectToUser(@PathParam("projectId") int projectId,
+      @PathParam("userId") int userId) {
+    return GSON.toJson(FACADE.addProjectToUser(projectId, userId));
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/users/project/{id}")
+  @DELETE
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String deleteProjectFromUser(@PathParam("id") int projectId) {
+    return GSON.toJson(FACADE.removeProjectFromUser(projectId));
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/category/project/{id}")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String createCategoryToProject(@PathParam("id") int id, String category) {
+    CategoryDTOSmall categoryDTOSmall = GSON.fromJson(category, CategoryDTOSmall.class);
+    categoryDTOSmall = FACADE.createCategory(categoryDTOSmall, id);
+    return GSON.toJson(categoryDTOSmall);
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/category/{id}")
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String createNestedCategory(@PathParam("id") int id, String category) {
+    CategoryDTOSmall categoryDTOSmall = GSON.fromJson(category, CategoryDTOSmall.class);
+    categoryDTOSmall = FACADE.createNestedCategory(categoryDTOSmall, id);
+    return GSON.toJson(categoryDTOSmall);
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/category/{id}")
+  @PUT
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String editCategory(@PathParam("id") int id, String category) {
+    CategoryDTOSmall categoryDTOSmall = GSON.fromJson(category, CategoryDTOSmall.class);
+    categoryDTOSmall = FACADE.editCategory(categoryDTOSmall, id);
+    return GSON.toJson(categoryDTOSmall);
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/categories")
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getAllCategories() {
+    return GSON.toJson(FACADE.getAllCategories());
+  }
+
+
+
+
+
+
+
+  //@RolesAllowed("admin")
+  @Path("/requirements")
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getAllRrequirements() {
+    return GSON.toJson(FACADE.getAllRequirements());
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/requirements/{id}")
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getRrequirementById(@PathParam("id") int id) {
+    return GSON.toJson(FACADE.getRequirementById(id));
+  }
+
+  //@RolesAllowed("admin")
+  @Path("/requirements/nested/{id}")
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public String getNestedRequirement(@PathParam("id") int id) {
+    return GSON.toJson(FACADE.getNestedRequirements(id));
   }
 
 }

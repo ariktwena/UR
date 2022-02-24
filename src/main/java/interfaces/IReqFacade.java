@@ -1,8 +1,12 @@
 package interfaces;
 
+import dto.CategoryDTOFull;
+import dto.CategoryDTOSmall;
 import dto.DepartmentDTOFull;
 import dto.DepartmentDTOSmall;
 import dto.ProjectDTOFull;
+import dto.RequirementDTOFull;
+import dto.RequirementDTOSmall;
 import dto.RoleDTO;
 import dto.UserDTOCreateEdit;
 import dto.UserDTOFull;
@@ -37,7 +41,8 @@ public interface IReqFacade {
 
   public UserDTOFull addUserRoleToUser(RoleDTO roleDTO, int userID) throws WebApplicationException;
 
-  public UserDTOFull removeUserRoleFromUser(RoleDTO roleDTO, int userID) throws WebApplicationException;
+  public UserDTOFull removeUserRoleFromUser(RoleDTO roleDTO, int userID)
+      throws WebApplicationException;
 
   public RoleDTO addUserRole(RoleDTO roleDTO) throws WebApplicationException;
 
@@ -55,24 +60,63 @@ public interface IReqFacade {
 
   public UserDTOFull activateUser(int userId) throws WebApplicationException;
 
-  public ProjectDTOFull createProject(ProjectDTOFull projectDTOFull, int userId) throws WebApplicationException;
+  public ProjectDTOFull createProject(ProjectDTOFull projectDTOFull, int userId)
+      throws WebApplicationException;
 
   public ProjectDTOFull editProject(ProjectDTOFull projectDTOFull, int projectId)
       throws WebApplicationException;
 
-  //All projects
+  public ArrayList<ProjectDTOFull> getAllProject() throws WebApplicationException;
 
-  //Project by id
+  public ProjectDTOFull getProjectById(int projectId) throws WebApplicationException;
 
-  //Project by user id
+  public ArrayList<ProjectDTOFull> getProjectByUserId(int userId) throws WebApplicationException;
 
-  //Add project to user
+  public ProjectDTOFull addProjectToUser(int projectId, int userId) throws WebApplicationException;
 
-  //Remove project from user
+  public String removeProjectFromUser(int projectId) throws WebApplicationException;
 
-  //Activate project
+  public ProjectDTOFull activateProject(int projectId) throws WebApplicationException;
 
   public String deleteProject(int projectId) throws WebApplicationException;
+
+
+
+  public CategoryDTOSmall createCategory(CategoryDTOSmall categoryDTOSmall, int projectId)
+      throws WebApplicationException;
+
+  public CategoryDTOSmall createNestedCategory(CategoryDTOSmall categoryDTOSmall, int nestedCategoryId)
+      throws WebApplicationException;
+
+  public CategoryDTOSmall editCategory(CategoryDTOSmall categoryDTOSmall, int categoryId)
+      throws WebApplicationException;
+
+  public ArrayList<CategoryDTOFull> getAllCategories() throws WebApplicationException;
+
+//  public CategoryDTOFull getCategoryById(int categoryId) throws WebApplicationException;
+
+//  public ArrayList<CategoryDTOSmall> getCategoryByProjectId(int projectId) throws WebApplicationException;
+
+//  public ArrayList<CategoryDTOSmall> getCategoryByCategoryId(int categoryId) throws WebApplicationException;
+
+  //Add to project
+
+  //Remove from project
+
+  //Activate
+
+  //Delete
+
+
+
+
+
+
+  public ArrayList<RequirementDTOSmall> getAllRequirements() throws WebApplicationException;
+
+  public RequirementDTOFull getRequirementById(int req_id) throws WebApplicationException;
+
+  public ArrayList<RequirementDTOFull> getNestedRequirements(int req_id) throws WebApplicationException;
 
 
 }

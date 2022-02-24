@@ -72,6 +72,8 @@ public class LoginEndpoint {
             }
             responseJson.addProperty("userRole", roleList);
             responseJson.addProperty("username", username);
+            responseJson.addProperty("email", user.getEmail());
+            responseJson.addProperty("user_id", user.getId());
             responseJson.addProperty("token", token);
             return Response.ok(new Gson().toJson(responseJson)).build();
 

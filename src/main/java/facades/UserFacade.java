@@ -51,9 +51,9 @@ public class UserFacade {
     }
 
     
-    public UserDTOSmall createUser(String firstName, String lastName, String username, String password) throws AuthenticationException {
+    public UserDTOSmall createUser(String firstName, String lastName, String username, String email, String password) throws AuthenticationException {
         EntityManager em = emf.createEntityManager();
-        User newUser = new User(firstName, lastName, username, password);
+        User newUser = new User(firstName, lastName, username, email, password);
         System.out.println(newUser);
         Role role;
         try {

@@ -1,13 +1,17 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -39,6 +43,22 @@ public class Project implements Serializable {
   }
   //***************************************************************
 
+  //***************One to Many****************
+  @OneToMany(mappedBy = "project", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+  private ArrayList<Category> categories;
+
+  public void addCategory(Category category) {
+    if (category != null) {
+      category.setProject(this);
+      this.categories.add(category);
+    }
+  }
+
+  public ArrayList<Category> getCategories() {
+    return categories;
+  }
+  //*****************************************
+
   public Project() {
   }
 
@@ -46,6 +66,7 @@ public class Project implements Serializable {
     this.projectName = projectName;
     this.user = null;
     this.active = 1;
+    this.categories = new ArrayList<>();
   }
 
   public int getId() {

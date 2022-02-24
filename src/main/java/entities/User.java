@@ -38,6 +38,8 @@ public class User implements Serializable {
     private String firstName;
     @Column(name = "last_name", length = 25)
     private String lastName;
+    @Column(name = "email", length = 25)
+    private String email;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -96,6 +98,38 @@ public class User implements Serializable {
     }
     //*****************************************
 
+    //***************One to Many****************
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private ArrayList<Requirement> requirementsAuthor;
+
+    public void addRequirementToAuthor(Requirement requirement) {
+        if (requirement != null) {
+            requirement.setAuthor(this);
+            this.requirementsAuthor.add(requirement);
+        }
+    }
+
+    public ArrayList<Requirement> getRequirementAuthor() {
+        return requirementsAuthor;
+    }
+    //*****************************************
+
+    //***************One to Many****************
+    @OneToMany(mappedBy = "editor", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private ArrayList<Requirement> requirementsEditor;
+
+    public void addRequirementToEditor(Requirement requirement) {
+        if (requirement != null) {
+            requirement.setEditor(this);
+            this.requirementsEditor.add(requirement);
+        }
+    }
+
+    public ArrayList<Requirement> getRequirementEditor() {
+        return requirementsEditor;
+    }
+    //*****************************************
+
     public User() {
     }
 
@@ -105,15 +139,18 @@ public class User implements Serializable {
         //return(pw.equals(userPass));
     }
 
-    public User(String firstName, String lastName, String userName, String userPass) {
+    public User(String firstName, String lastName, String userName, String email, String userPass) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
+        this.email = email;
         this.userSalt = BCrypt.gensalt(10);
         this.userPass = encrypt(userPass);
         this.department = null;
         this.projects = new ArrayList<>();
         this.active = 1;
+        this.requirementsAuthor = new ArrayList<>();
+        this.requirementsEditor = new ArrayList<>();
     }
 
 
@@ -192,6 +229,14 @@ public class User implements Serializable {
         this.active = active;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -199,12 +244,8 @@ public class User implements Serializable {
             ", userName='" + userName + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
-            ", userPass='" + userPass + '\'' +
-            ", userSalt='" + userSalt + '\'' +
+            ", email='" + email + '\'' +
             ", active=" + active +
-            ", roleList=" + roleList +
-            ", department=" + department +
-            ", projects=" + projects +
             '}';
     }
 }
