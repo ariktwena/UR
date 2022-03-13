@@ -15,7 +15,6 @@ public class RequirementDTOSmall {
   private Status status;
   private UserDTOSmall author;
   private int active;
-  private CategoryDTOSmall categoryDTOSmall;
 
   public RequirementDTOSmall() {
   }
@@ -27,7 +26,6 @@ public class RequirementDTOSmall {
     this.status = requirement.getStatus();
     this.author = requirement.getAuthor() == null ? null : new UserDTOSmall(requirement.getAuthor());
     this.active = requirement.getActive();
-    this.categoryDTOSmall = requirement.getCategory() == null ? null : new CategoryDTOSmall(requirement.getCategory());
   }
 
   public RequirementDTOSmall(LocalDate created, String description,
@@ -38,18 +36,16 @@ public class RequirementDTOSmall {
     this.status = findStatus(status);
     this.active = active;
     this.author = null;
-    this.categoryDTOSmall = null;
   }
 
   public RequirementDTOSmall(LocalDate created, String description,
-      String status, int active, UserDTOSmall userDTOSmall, CategoryDTOSmall categoryDTOSmall) {
+      String status, int active, UserDTOSmall userDTOSmall) {
     this.id = -1;
     this.created = created;
     this.description = description;
     this.status = findStatus(status);
     this.active = active;
     this.author = userDTOSmall;
-    this.categoryDTOSmall = categoryDTOSmall;
   }
 
   private Status findStatus(String status){
@@ -113,11 +109,4 @@ public class RequirementDTOSmall {
     this.author = author;
   }
 
-  public CategoryDTOSmall getCategoryDTOSmall() {
-    return categoryDTOSmall;
-  }
-
-  public void setCategoryDTOSmall(CategoryDTOSmall categoryDTOSmall) {
-    this.categoryDTOSmall = categoryDTOSmall;
-  }
 }

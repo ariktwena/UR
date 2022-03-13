@@ -14,28 +14,27 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "categories")
-@NamedQuery(name = "Category.deleteAllRows", query = "DELETE from Category")
-public class Category implements Serializable {
+@Table(name = "category_level0")
+@NamedQuery(name = "Category_level0.deleteAllRows", query = "DELETE from Category_level0")
+public class Category_level0 implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
   private int id;
   @Column(name = "name", length = 255, nullable = false, unique = true)
   private String categoryName;
   @Column(name = "active")
   private int active;
-  @Column(name = "category_level")
-  private int category_level;
+  @Column(name = "level")
+  private int level;
   @Column(name = "refrence_id")
   private int refrence_id;
+//  @Column(name = "Overall Id")
+//  private int overallId;
 
   //***************Many to One****************
   @ManyToOne
@@ -52,42 +51,50 @@ public class Category implements Serializable {
   //***************************************************************
 
 
-//  //***************One to Many****************
-//  @OneToMany(mappedBy = "category", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-//  private ArrayList<Requirement> requirements;
-//
-//  public void addRequirement(Requirement requirement) {
-//    if (requirement != null) {
-//      requirement.setCategory(this);
-//      this.requirements.add(requirement);
-//    }
-//  }
-//
-//  public ArrayList<Requirement> getRequirement() {
-//    return requirements;
-//  }
-//  //*****************************************
+  //***************One to Many****************
+  @OneToMany(mappedBy = "category_level0", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+  private ArrayList<Requirement> requirements;
 
-  public Category() {
+  public void addRequirement(Requirement requirement) {
+    if (requirement != null) {
+      requirement.setCategory_level0(this);
+      this.requirements.add(requirement);
+    }
   }
 
-  public Category(String categoryName, int category_level) {
+  public ArrayList<Requirement> getRequirement() {
+    return requirements;
+  }
+  //*****************************************
+
+  //***************One to Many****************
+  @OneToMany(mappedBy = "category_level0", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+  private ArrayList<Category_level1> category_level1s;
+
+  public void addCategory_level1(Category_level1 category_level1) {
+    if (category_level1 != null) {
+      category_level1.setCategory_level0(this);
+      this.category_level1s.add(category_level1);
+    }
+  }
+
+  public ArrayList<Category_level1> getCategory_level1() {
+    return category_level1s;
+  }
+  //*****************************************
+
+
+  public Category_level0() {
+  }
+
+  public Category_level0(String categoryName){
+    this.active = 1;
+    this.level = 0;
     this.categoryName = categoryName;
     this.project = null;
-    this.active = 1;
-//    this.requirements = new ArrayList<>();
-    this.category_level = category_level;
     this.refrence_id = -1;
   }
 
-  public Category(String categoryName) {
-    this.categoryName = categoryName;
-    this.project = null;
-    this.active = 1;
-//    this.requirements = new ArrayList<>();
-    this.category_level = -1;
-    this.refrence_id = -1;
-  }
 
   public int getId() {
     return id;
@@ -113,12 +120,12 @@ public class Category implements Serializable {
     this.active = active;
   }
 
-  public int getCategory_level() {
-    return category_level;
+  public int getLevel() {
+    return level;
   }
 
-  public void setCategory_level(int category_level) {
-    this.category_level = category_level;
+  public void setLevel(int level) {
+    this.level = level;
   }
 
   public int getRefrence_id() {
@@ -128,4 +135,12 @@ public class Category implements Serializable {
   public void setRefrence_id(int refrence_id) {
     this.refrence_id = refrence_id;
   }
+
+  //  public int getOverallId() {
+//    return overallId;
+//  }
+//
+//  public void setOverallId(int overallId) {
+//    this.overallId = overallId;
+//  }
 }

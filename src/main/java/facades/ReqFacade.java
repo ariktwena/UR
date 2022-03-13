@@ -5,6 +5,7 @@ package facades;
 
 import dto.CategoryDTOFull;
 import dto.CategoryDTOSmall;
+import dto.Category_level0DTO;
 import dto.DepartmentDTOFull;
 import dto.DepartmentDTOSmall;
 import dto.ProjectDTOFull;
@@ -15,6 +16,8 @@ import dto.UserDTOCreateEdit;
 import dto.UserDTOFull;
 import dto.UserDTOFullProject;
 import entities.Category;
+import entities.Category_level0;
+import entities.Category_level1;
 import entities.Department;
 import entities.Project;
 import entities.Requirement;
@@ -602,22 +605,27 @@ public class ReqFacade implements IReqFacade {
   }
 
   @Override
-  public CategoryDTOSmall createCategory(CategoryDTOSmall categoryDTOSmall, int projectId)
+  public Category_level0DTO createCategoryLevel0(CategoryDTOSmall categoryDTOSmall, int projectId)
       throws WebApplicationException {
     if (categoryDTOSmall.getCategoryName() == null || categoryDTOSmall.getCategoryName().equals("")) {
       throw new WebApplicationException("Category name is missing", 401);
     }
     EntityManager em = emf.createEntityManager();
 
-    Category category = findOrCreateCategoryInDB(categoryDTOSmall);
+    Category_level0 category_level0 = findOrCreateCategoryLevel0InDB(categoryDTOSmall, projectId);
+    Category category = new Category(category_level0.getCategoryName(), category_level0.getLevel());
+    category = findOrCreateCategoryInDB(category, projectId);
 
     try {
       Project project = em.find(Project.class, projectId);
-      project.addCategory(category);
       em.getTransaction().begin();
+      category_level0.setRefrence_id(category.getId());
+      em.merge(category_level0);
+      project.addCategory(category);
+      project.addCategory_level0(category_level0);
       em.merge(project);
       em.getTransaction().commit();
-      return new CategoryDTOSmall(category);
+      return new Category_level0DTO(category_level0);
     } catch (RuntimeException ex) {
       throw new WebApplicationException("No Project with id: " + projectId + " exists", 404);
     } finally {
@@ -633,19 +641,61 @@ public class ReqFacade implements IReqFacade {
     }
 
     EntityManager em = emf.createEntityManager();
+    CategoryDTOSmall categoryDTOSmallReturn = null;
+    Category_level0 category_level0 = null;
+    Category_level1 category_level1 = null;
+    Category category;
+    Category nestedCategory = em.find(Category.class, nestedCategoryId);
+    Project project = em.find(Project.class, nestedCategory.getProject().getId());
 
-    Category category = findOrCreateCategoryInDB(categoryDTOSmall);
+//    Category category = findOrCreateCategoryInDB(categoryDTOSmall);
     try {
-      Category nestedCategory = em.find(Category.class, nestedCategoryId);
-      Project project = em.find(Project.class, nestedCategory.getProject().getId());
-      category.setCategory_dependency_id(nestedCategoryId);
-      project.addCategory(category);
       em.getTransaction().begin();
-      em.merge(project);
+
+
+      switch(nestedCategory.getCategory_level()) {
+        case 0:
+          category_level1 = findOrCreateCategoryLevel1InDB(categoryDTOSmall, project.getId());
+          category = new Category(category_level1.getCategoryName(), category_level1.getLevel());
+          category = findOrCreateCategoryInDB(category, project.getId());
+          category.setRefrence_id(nestedCategoryId);
+          em.merge(category);
+          category_level1.setRefrence_id(category.getId());
+          em.merge(category_level1);
+          project.addCategory(category);
+          project.addCategory_level1(category_level1);
+          em.merge(project);
+          CategoryDTOSmall categoryDTOSmallToFind = new CategoryDTOSmall(nestedCategory.getCategoryName(), nestedCategory.getCategory_level(), nestedCategory.getRefrence_id());
+          category_level0 = findOrCreateCategoryLevel0InDB(categoryDTOSmallToFind, project.getId());
+          category_level0.addCategory_level1(category_level1);
+          em.merge(category_level0);
+          categoryDTOSmallReturn = new CategoryDTOSmall(category_level1.getCategoryName(), category_level1.getLevel(), category.getId());
+          categoryDTOSmallReturn.setId(category_level1.getId());
+          break;
+        case 1:
+          // code block
+          break;
+        default:
+          category_level0 = findOrCreateCategoryLevel0InDB(categoryDTOSmall, project.getId());
+          category = new Category(category_level0.getCategoryName(), category_level0.getLevel());
+          category = findOrCreateCategoryInDB(category, project.getId());
+          category_level0.setRefrence_id(category.getId());
+          em.merge(category_level0);
+          project.addCategory(category);
+          project.addCategory_level0(category_level0);
+          em.merge(project);
+          categoryDTOSmallReturn = new CategoryDTOSmall(category_level0.getCategoryName(), category_level0.getLevel(), category.getId());
+          categoryDTOSmallReturn.setId(category_level0.getId());
+
+      }
+
       em.getTransaction().commit();
-      categoryDTOSmall = new CategoryDTOSmall(nestedCategory);
-      categoryDTOSmall.getSubCategories().add(new CategoryDTOSmall(category));
-      return categoryDTOSmall;
+      return categoryDTOSmallReturn;
+
+
+
+
+
     } catch (RuntimeException ex) {
       throw new WebApplicationException("No Category with id: " + nestedCategoryId + " exists", 404);
     } finally {
@@ -653,48 +703,138 @@ public class ReqFacade implements IReqFacade {
     }
   }
 
-  @Override
-  public CategoryDTOSmall editCategory(CategoryDTOSmall categoryDTOSmall, int categoryId)
-      throws WebApplicationException {
-    if (categoryDTOSmall.getCategoryName() == null || categoryDTOSmall.getCategoryName().equals("")) {
-      throw new WebApplicationException("Category name is missing", 401);
-    }
-    EntityManager em = emf.createEntityManager();
-    try {
-      Category category = em.find(Category.class, categoryId);
-      category.setCategoryName(categoryDTOSmall.getCategoryName());
-      if(categoryDTOSmall.getCategory_dependency_id() != 0){
-        category.setCategory_dependency_id(categoryDTOSmall.getCategory_dependency_id());
-      }
-      em.getTransaction().begin();
-      em.merge(category);
-      em.getTransaction().commit();
-      return new CategoryDTOSmall(category);
-    } catch (RuntimeException ex) {
-      throw new WebApplicationException("No Category with id: " + categoryId + " exists", 404);
-    } finally {
-      em.close();
-    }
-  }
+//  @Override
+//  public CategoryDTOSmall editCategory(CategoryDTOSmall categoryDTOSmall, int categoryId)
+//      throws WebApplicationException {
+//    if (categoryDTOSmall.getCategoryName() == null || categoryDTOSmall.getCategoryName().equals("")) {
+//      throw new WebApplicationException("Category name is missing", 401);
+//    }
+//    EntityManager em = emf.createEntityManager();
+//    try {
+//      Category category = em.find(Category.class, categoryId);
+//      category.setCategoryName(categoryDTOSmall.getCategoryName());
+//      if(categoryDTOSmall.getCategory_dependency_id() != 0){
+//        category.setCategory_dependency_id(categoryDTOSmall.getCategory_dependency_id());
+//      }
+//      em.getTransaction().begin();
+//      em.merge(category);
+//      em.getTransaction().commit();
+//      return new CategoryDTOSmall(category);
+//    } catch (RuntimeException ex) {
+//      throw new WebApplicationException("No Category with id: " + categoryId + " exists", 404);
+//    } finally {
+//      em.close();
+//    }
+//  }
+//
+//  @Override
+//  public ArrayList<CategoryDTOFull> getAllCategories() throws WebApplicationException {
+//    EntityManager em = emf.createEntityManager();
+//    try {
+//      TypedQuery<Category> query = em.createQuery("SELECT c FROM Category c", Category.class);
+//      List<Category> categories = query.getResultList();
+//      ArrayList<CategoryDTOFull> categoryDTOFulls = new ArrayList<>();
+//      for (Category c : categories) {
+//        categoryDTOFulls.add(new CategoryDTOFull(c));
+//      }
+//      return categoryDTOFulls;
+//    } catch (RuntimeException ex) {
+//      throw new WebApplicationException(
+//          "Internal Server Problem. We are sorry for the inconvenience", 500);
+//    } finally {
+//      em.close();
+//    }
+//  }
+//
+//  @Override
+//  public CategoryDTOFull getCategoryById(int categoryId) throws WebApplicationException {
+//    EntityManager em = emf.createEntityManager();
+//    try {
+//      Category category = em.find(Category.class, categoryId);
+//      CategoryDTOFull categoryDTOFull = new CategoryDTOFull(category);
+//      TypedQuery<Category> query = em.createQuery("SELECT c FROM Category c WHERE c.category_dependency_id = :id", Category.class);
+//      query.setParameter("id", categoryId);
+//      List<Category> categories = query.getResultList();
+//      if(!categories.isEmpty() || categories.size() > 0){
+//        for(Category c : categories){
+//          categoryDTOFull.getSubCategories().add(new CategoryDTOFull(c));
+//        }
+//        return categoryDTOFull;
+//      } else {
+//        return categoryDTOFull;
+//      }
+//    } catch (RuntimeException ex) {
+//      throw new WebApplicationException("No Category with id: " + categoryId + " exists", 404);
+//    } finally {
+//      em.close();
+//    }
+//  }
 
-  @Override
-  public ArrayList<CategoryDTOFull> getAllCategories() throws WebApplicationException {
-    EntityManager em = emf.createEntityManager();
-    try {
-      TypedQuery<Category> query = em.createQuery("SELECT c FROM Category c", Category.class);
-      List<Category> categories = query.getResultList();
-      ArrayList<CategoryDTOFull> categoryDTOFulls = new ArrayList<>();
-      for (Category c : categories) {
-        categoryDTOFulls.add(new CategoryDTOFull(c));
-      }
-      return categoryDTOFulls;
-    } catch (RuntimeException ex) {
-      throw new WebApplicationException(
-          "Internal Server Problem. We are sorry for the inconvenience", 500);
-    } finally {
-      em.close();
-    }
-  }
+//  @Override
+//  public ArrayList<CategoryDTOSmall> getCategoryByProjectId(int projectId)
+//      throws WebApplicationException {
+//    return null;
+//    EntityManager em = emf.createEntityManager();
+//    try {
+//      ArrayList<CategoryDTOSmall> categoryDTOSmalls = new ArrayList<>();
+////      Category category = em.find(Category.class, categoryId);
+////      CategoryDTOFull categoryDTOFull = new CategoryDTOFull(category);
+//      TypedQuery<Category> query = em.createQuery("SELECT c FROM Category c JOIN c.project p WHERE p.id = :projectId AND c.category_dependency_id = 0", Category.class);
+//      query.setParameter("projectId", projectId);
+//      List<Category> categories = query.getResultList();
+//      for(Category c : categories){
+//        categoryDTOSmalls.add(new CategoryDTOSmall(c));
+//      }
+//
+//      //Find nested categories level 1
+//      List<Category> nestedCategories;
+//      for(CategoryDTOSmall c : categoryDTOSmalls){
+//        nestedCategories = findNestedCategories(c.getId());
+//        if(!nestedCategories.isEmpty() || nestedCategories.size() > 0){
+//          for(Category c1 : nestedCategories){
+//            categoryDTOSmalls.add(new CategoryDTOSmall(c1));
+//          }
+//
+//          //Find nested level 2
+//          for(CategoryDTOSmall c2 : categoryDTOSmalls){
+//            int id_level2 = c2.getId();
+//            ArrayList<CategoryDTOSmall> categoryDTOSmalls1 = c2.getSubCategories();
+//            List<Category> nestedCategories1;
+//            nestedCategories1 = findNestedCategories(id_level2);
+//            if(!nestedCategories1.isEmpty() || nestedCategories1.size() > 0){
+//              for(Category c1 : nestedCategories1){
+//                categoryDTOSmalls1.add(new CategoryDTOSmall(c1));
+//              }
+//
+//              //Find nested leve 3
+//            }
+//          }
+//        }
+//      }
+//
+//
+////      if(!categories.isEmpty() || categories.size() > 0){
+////        for(Category c : categories){
+////          categoryDTOFull.getSubCategories().add(new CategoryDTOFull(c));
+////        }
+////        return categoryDTOFull;
+////      } else {
+////        return categoryDTOFull;
+////      }
+//    } catch (RuntimeException ex) {
+//      throw new WebApplicationException("No Project with id: " + projectId + " exists", 404);
+//    } finally {
+//      em.close();
+//    }
+//  }
+
+//  private List<Category> findNestedCategories(int id) {
+//    EntityManager em = emf.createEntityManager();
+//    TypedQuery<Category> query = em.createQuery("SELECT c FROM Category c WHERE c.category_dependency_id = :id", Category.class);
+//    query.setParameter("id", id);
+//    List<Category> categories = query.getResultList();
+//    return categories;
+//  }
 
   @Override
   public ArrayList<RequirementDTOSmall> getAllRequirements() throws WebApplicationException {
@@ -881,21 +1021,39 @@ public class ReqFacade implements IReqFacade {
     }
   }
 
-  private Category findOrCreateCategoryInDB(CategoryDTOSmall categoryDTOSmall) {
+  private Category_level0 findOrCreateCategoryLevel0InDB(CategoryDTOSmall categoryDTOSmall, int projectId) {
     EntityManager em = emf.createEntityManager();
     try {
       Query query = em
-          .createQuery("SELECT c FROM Category c WHERE c.categoryName = :name ", Category.class);
+          .createQuery("SELECT c FROM Category_level0 c JOIN c.project p WHERE p.id = :id AND c.categoryName = :name ", Category_level0.class);
+      query.setParameter("id", projectId);
       query.setParameter("name", categoryDTOSmall.getCategoryName());
-      Category category = (Category) query.getSingleResult();
-      if (category.getId() > -1) {
-//        throw new WebApplicationException("Project already exists", 401);
-        return category;
-      }
-      return null;
+      Category_level0 category_level0 = (Category_level0) query.getSingleResult();
+      return category_level0;
     } catch (NoResultException ex) {
       em.getTransaction().begin();
-      Category category = new Category(categoryDTOSmall.getCategoryName());
+      Category_level0 category_level0 = new Category_level0(categoryDTOSmall.getCategoryName());
+      em.persist(category_level0);
+      em.getTransaction().commit();
+      return category_level0;
+    } finally {
+      em.close();
+    }
+  }
+
+  private Category findOrCreateCategoryInDB(Category category, int projectId) {
+    EntityManager em = emf.createEntityManager();
+    try {
+      Query query = em
+          .createQuery("SELECT c FROM Category c JOIN c.project p WHERE p.id = :id AND c.categoryName = :name AND c.category_level = :level", Category.class);
+      query.setParameter("id", projectId);
+      query.setParameter("name", category.getCategoryName());
+      query.setParameter("level", category.getCategory_level());
+      category = (Category) query.getSingleResult();
+      return category;
+    } catch (NoResultException ex) {
+      em.getTransaction().begin();
+      category = new Category(category.getCategoryName(), category.getCategory_level());
       em.persist(category);
       em.getTransaction().commit();
       return category;
@@ -903,6 +1061,27 @@ public class ReqFacade implements IReqFacade {
       em.close();
     }
   }
+
+  private Category_level1 findOrCreateCategoryLevel1InDB(CategoryDTOSmall categoryDTOSmall, int projectId) {
+    EntityManager em = emf.createEntityManager();
+    try {
+      Query query = em
+          .createQuery("SELECT c FROM Category_level1 c JOIN c.project p WHERE p.id = :id AND c.categoryName = :name ", Category_level1.class);
+      query.setParameter("id", projectId);
+      query.setParameter("name", categoryDTOSmall.getCategoryName());
+      Category_level1 category_level1 = (Category_level1) query.getSingleResult();
+      return category_level1;
+    } catch (NoResultException ex) {
+      em.getTransaction().begin();
+      Category_level1 category_level1 = new Category_level1(categoryDTOSmall.getCategoryName());
+      em.persist(category_level1);
+      em.getTransaction().commit();
+      return category_level1;
+    } finally {
+      em.close();
+    }
+  }
+
 }
 
 

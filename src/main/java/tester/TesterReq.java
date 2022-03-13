@@ -4,6 +4,7 @@
 package tester;
 
 import entities.Category;
+import entities.Category_level0;
 import entities.Project;
 import entities.Requirement;
 import entities.User;
@@ -24,17 +25,17 @@ public class TesterReq {
 
     User u = em.find(User.class, 1);
 
-    Category c = em.find(Category.class, 1);
+    Category_level0 c = em.find(Category_level0.class, 1);
 
     Requirement r = new Requirement("Test description");
-    r.setCategory(c);
+    r.setCategory_level0(c);
     r.setAuthor(u);
     em.persist(r);
     em.getTransaction().commit();
 
     em.getTransaction().begin();
     Requirement r1 = new Requirement("Test dependend");
-    r.setCategory(c);
+    r.setCategory_level0(c);
     r1.setAuthor(u);
     r1.setDepended_on_id(r.getId());
     em.persist(r1);

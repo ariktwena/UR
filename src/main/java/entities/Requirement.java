@@ -61,14 +61,14 @@ public class Requirement implements Serializable {
   //***************Many to One****************
   @ManyToOne
   @JoinColumn(name="category_id")
-  private Category category;
+  private Category_level0 category_level0;
 
-  public void setCategory(Category category) {
-    this.category = category;
+  public void setCategory_level0(Category_level0 category_level0) {
+    this.category_level0 = category_level0;
   }
 
-  public Category getCategory() {
-    return category;
+  public Category_level0 getCategory_level0() {
+    return category_level0;
   }
   //***************************************************************
 
@@ -130,7 +130,7 @@ public class Requirement implements Serializable {
     this.edited = null;
     this.status = Status.Pending;
     this.active = 1;
-    this.category = null;
+    this.category_level0 = null;
     this.author = null;
     this.editor = null;
     this.req_dependency_id = 0;

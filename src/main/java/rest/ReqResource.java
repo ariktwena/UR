@@ -6,6 +6,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dto.CategoryDTOSmall;
+import dto.Category_level0DTO;
 import dto.DepartmentDTOFull;
 import dto.DepartmentDTOSmall;
 import dto.ProjectDTOFull;
@@ -334,8 +335,8 @@ public class ReqResource {
   @Produces(MediaType.APPLICATION_JSON)
   public String createCategoryToProject(@PathParam("id") int id, String category) {
     CategoryDTOSmall categoryDTOSmall = GSON.fromJson(category, CategoryDTOSmall.class);
-    categoryDTOSmall = FACADE.createCategory(categoryDTOSmall, id);
-    return GSON.toJson(categoryDTOSmall);
+    Category_level0DTO category_level0DTO = FACADE.createCategoryLevel0(categoryDTOSmall, id);
+    return GSON.toJson(category_level0DTO);
   }
 
   //@RolesAllowed("admin")
@@ -349,25 +350,38 @@ public class ReqResource {
     return GSON.toJson(categoryDTOSmall);
   }
 
-  //@RolesAllowed("admin")
-  @Path("/category/{id}")
-  @PUT
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public String editCategory(@PathParam("id") int id, String category) {
-    CategoryDTOSmall categoryDTOSmall = GSON.fromJson(category, CategoryDTOSmall.class);
-    categoryDTOSmall = FACADE.editCategory(categoryDTOSmall, id);
-    return GSON.toJson(categoryDTOSmall);
-  }
+//  //@RolesAllowed("admin")
+//  @Path("/category/{id}")
+//  @PUT
+//  @Consumes(MediaType.APPLICATION_JSON)
+//  @Produces(MediaType.APPLICATION_JSON)
+//  public String editCategory(@PathParam("id") int id, String category) {
+//    CategoryDTOSmall categoryDTOSmall = GSON.fromJson(category, CategoryDTOSmall.class);
+//    categoryDTOSmall = FACADE.editCategory(categoryDTOSmall, id);
+//    return GSON.toJson(categoryDTOSmall);
+//  }
+//
+//  //@RolesAllowed("admin")
+//  @Path("/categories")
+//  @GET
+//  @Consumes(MediaType.APPLICATION_JSON)
+//  @Produces(MediaType.APPLICATION_JSON)
+//  public String getAllCategories() {
+//    return GSON.toJson(FACADE.getAllCategories());
+//  }
+//
+//  //@RolesAllowed("admin")
+//  @Path("/category/{id}")
+//  @GET
+//  @Consumes(MediaType.APPLICATION_JSON)
+//  @Produces(MediaType.APPLICATION_JSON)
+//  public String getCategoryById(@PathParam("id") int id) {
+//    return GSON.toJson(FACADE.getCategoryById(id));
+//  }
 
-  //@RolesAllowed("admin")
-  @Path("/categories")
-  @GET
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public String getAllCategories() {
-    return GSON.toJson(FACADE.getAllCategories());
-  }
+
+
+
 
 
 

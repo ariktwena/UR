@@ -2,6 +2,7 @@ package interfaces;
 
 import dto.CategoryDTOFull;
 import dto.CategoryDTOSmall;
+import dto.Category_level0DTO;
 import dto.DepartmentDTOFull;
 import dto.DepartmentDTOSmall;
 import dto.ProjectDTOFull;
@@ -82,16 +83,16 @@ public interface IReqFacade {
 
 
 
-  public CategoryDTOSmall createCategory(CategoryDTOSmall categoryDTOSmall, int projectId)
+  public Category_level0DTO createCategoryLevel0(CategoryDTOSmall categoryDTOSmall, int projectId)
       throws WebApplicationException;
 
   public CategoryDTOSmall createNestedCategory(CategoryDTOSmall categoryDTOSmall, int nestedCategoryId)
       throws WebApplicationException;
 
-  public CategoryDTOSmall editCategory(CategoryDTOSmall categoryDTOSmall, int categoryId)
-      throws WebApplicationException;
+//  public CategoryDTOSmall editCategory(CategoryDTOSmall categoryDTOSmall, int categoryId)
+//      throws WebApplicationException;
 
-  public ArrayList<CategoryDTOFull> getAllCategories() throws WebApplicationException;
+//  public ArrayList<CategoryDTOFull> getAllCategories() throws WebApplicationException;
 
 //  public CategoryDTOFull getCategoryById(int categoryId) throws WebApplicationException;
 

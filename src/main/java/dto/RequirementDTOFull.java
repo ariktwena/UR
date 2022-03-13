@@ -18,8 +18,6 @@ public class RequirementDTOFull {
   private int req_dependency_id;
   private LocalDate edited;
   private UserDTOSmall editor;
-  private CategoryDTOFull categoryDTOFull;
-
 
 
   public RequirementDTOFull() {
@@ -35,12 +33,11 @@ public class RequirementDTOFull {
     this.req_dependency_id = requirement.getDepended_on_id();
     this.edited = requirement.getEdited();
     this.editor = requirement.getEditor() == null ? null : new UserDTOSmall(requirement.getEditor());
-    this.categoryDTOFull = requirement.getCategory() == null ? null : new CategoryDTOFull(requirement.getCategory());
   }
 
   public RequirementDTOFull(LocalDate created, String description,
       String status, int active, UserDTOSmall author, int req_dependency_id,
-      LocalDate edited, UserDTOSmall editor, CategoryDTOFull categoryDTOFull) {
+      LocalDate edited, UserDTOSmall editor) {
     this.id = -1;
     this.created = created;
     this.description = description;
@@ -50,7 +47,6 @@ public class RequirementDTOFull {
     this.req_dependency_id = req_dependency_id;
     this.edited = edited;
     this.editor = editor;
-    this.categoryDTOFull = categoryDTOFull;
   }
 
   private Status findStatus(String status){
@@ -138,11 +134,5 @@ public class RequirementDTOFull {
     this.editor = editor;
   }
 
-  public CategoryDTOFull getCategoryDTOFull() {
-    return categoryDTOFull;
-  }
 
-  public void setCategoryDTOFull(CategoryDTOFull categoryDTOFull) {
-    this.categoryDTOFull = categoryDTOFull;
-  }
 }
